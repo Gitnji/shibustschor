@@ -478,29 +478,6 @@ public function makeDecision(): void
 
                 <div class="flex items-center gap-4">
 
-                    {{-- Mobile menu --}}
-                    <button
-                        type="button"
-                        class="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 lg:hidden"
-                    >
-
-                        <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        </svg>
-
-                    </button>
-
-
                     <div>
 
                         <h1 class="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
