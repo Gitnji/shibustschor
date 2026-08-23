@@ -3,19 +3,22 @@ FROM dunglas/frankenphp:1.3-php8.4
 
 WORKDIR /var/www/html
 
-# Install system dependencies + Node.js
+# Install base system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     unzip \
     libpq-dev \
     libzip-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-install \
-    pdo_pgsql \
-    zip \
     && rm -rf /var/lib/apt/lists/*
+
+# Install modern Node.js (v22) explicitly from NodeSource
+RUN curl -fsSL https://nodesource.com | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP native extensions
+RUN docker-php-ext-install pdo_pgsql zip
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -33,7 +36,7 @@ RUN composer install \
 # Copy the application source code
 COPY . .
 
-# Build production assets smoothly
+# Build production assets using Node v22
 RUN rm -f public/hot \
     && npm ci \
     && npm run build
