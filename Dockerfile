@@ -15,17 +15,22 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# 1. Copy only composer files first (for better layer caching)
 COPY composer.json composer.lock ./
 
+# 2. Install dependencies WITHOUT running scripts
 RUN composer install \
     --no-dev \
     --prefer-dist \
     --no-interaction \
     --no-progress \
-    --optimize-autoloader
+    --optimize-autoloader \
+    --no-scripts
 
+# 3. Now copy the rest of the application (including artisan)
 COPY . .
 
+# 4. Run the scripts that need artisan
 RUN php artisan package:discover --ansi
 
 RUN chmod -R 775 storage bootstrap/cache
