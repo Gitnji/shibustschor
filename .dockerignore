@@ -12,3 +12,5 @@ yarn-error.log
 Dockerfile*
 docker-compose*
 tests
+public/hot
+public/build
