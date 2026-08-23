@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install modern Node.js (v22) explicitly from NodeSource
+# Install modern Node.js (v22) explicitly from the official binary repository
 RUN curl -fsSL https://nodesource.com | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
