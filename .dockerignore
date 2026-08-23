@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+.idea
+node_modules
+vendor
+storage/logs/*
+.env
+.env.*
+npm-debug.log
+yarn-error.log
+Dockerfile*
+docker-compose*
+tests
