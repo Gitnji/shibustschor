@@ -482,7 +482,7 @@ public function makeDecision(): void
                     <button
                         type="button"
                         class="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 lg:hidden"
-                        @click="mobileNavOpen = true"
+                        data-mobile-nav-open
                         aria-controls="mobile-navigation"
                         aria-label="Open navigation"
                     >
