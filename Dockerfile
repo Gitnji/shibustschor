@@ -37,7 +37,7 @@ RUN npm ci && npm run build
 
 # Run Laravel post-install commands
 RUN php artisan package:discover --ansi \
-    && php artisan config:cache \
+    # && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
