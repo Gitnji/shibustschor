@@ -1,4 +1,5 @@
-FROM php:8.4-cli
+# Step 1: Use the official high-performance FrankenPHP production image
+FROM dunglas/frankenphp:1.3-php8.4
 
 WORKDIR /var/www/html
 
@@ -29,26 +30,24 @@ RUN composer install \
     --optimize-autoloader \
     --no-scripts
 
-# Copy the application source. The Docker ignore file deliberately excludes
-# Vite's development marker and previously-built assets.
+# Copy the application source code
 COPY . .
 
-# Build production assets. Removing `public/hot` ensures Laravel's `@vite`
-# directive uses the generated manifest instead of attempting to contact a
-# development Vite server, which is not available on Render.
+# Build production assets smoothly
 RUN rm -f public/hot \
     && npm ci \
     && npm run build
 
-# Run Laravel post-install commands
+# Run Laravel post-install caching commands
 RUN php artisan package:discover --ansi \
-    # && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
-# Permissions
-RUN chmod -R 775 storage bootstrap/cache
+# Set directory permissions for the FrankenPHP server user
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 10000
 
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Run migrations and start the high-performance concurrent worker server
+CMD php artisan migrate --force && frankenphp php-server --listen :${PORT:-10000} --public-dir public
